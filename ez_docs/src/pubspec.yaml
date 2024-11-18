@@ -1,0 +1,11 @@
+name: ez_docs
+
+flutter:
+  uses-material-design: true
+
+  src:
+    - assets/img
+    - assets/icons
+
+dependencies:
+ flutter_svg: ^2.0.5
