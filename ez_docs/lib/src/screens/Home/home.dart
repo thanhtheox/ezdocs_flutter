@@ -3,9 +3,10 @@ import '../../assets/constants/color.dart';
 import '../../assets/constants/responsive.dart';
 import '../../components/fuctionButton.dart';
 import '../../components/header.dart';
-//import '../../../src/assets/img/';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -15,14 +16,14 @@ class HomeScreen extends StatelessWidget {
             // Image background
             Positioned.fill(
               child: Image.asset(
-                'src/assets/img/IMG_HomeBG.png',
+                'IMG_HomeBG.png',
                 fit: BoxFit.cover,
               ),
             ),
             // Content on top of the background
             Column(
               children: [
-                Header(title: 'Chào mừng bạn đến với EZDocs'), // Header with dynamic title
+                const Header(title: 'Trợ giúp'), // Header with dynamic title
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            FunctionButton(
+                            const FunctionButton(
                               icon: 'assets/img/IMG_Summarize.png',
                               buttonName: 'Tóm tắt văn bản',
                               backgroundColor: AppColors.orange,
@@ -71,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                               iconHeight: 29,
                             ),
                             SizedBox(width: scale(context, 20)),
-                            FunctionButton(
+                            const FunctionButton(
                               icon: 'assets/img/IMG_Summarize.png',
                               buttonName: 'Dịch thuật',
                               backgroundColor: AppColors.forestGreen,
@@ -83,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: scale(context, 50)),
-                      FunctionButton(
+                      const FunctionButton(
                         icon: 'assets/img/IMG_Summarize.png',
                         buttonName: 'Chat bot',
                         backgroundColor: AppColors.blue,

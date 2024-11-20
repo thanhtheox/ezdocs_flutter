@@ -4,7 +4,7 @@ flutter:
   uses-material-design: true
 
   src:
-    - assets/img
+    - assets/img/IMG_HomeBG.png
     - assets/icons
 
 dependencies:

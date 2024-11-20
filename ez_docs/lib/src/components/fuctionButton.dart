@@ -10,13 +10,13 @@ class FunctionButton extends StatelessWidget {
   final double iconHeight;
 
   const FunctionButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.buttonName,
     required this.backgroundColor,
     required this.iconWidth,
     required this.iconHeight,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class FunctionButton extends StatelessWidget {
       },
       child: Container(
         height: scale(context, 200),
-        width: scale(context, 400),
+        width: scale(context, 500),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(scale(context, 15)),
@@ -45,7 +45,7 @@ class FunctionButton extends StatelessWidget {
                 height: iconHeight,
               ),
             ),
-            // Button Text
+        
             Text(
               buttonName,
               style: TextStyle(
