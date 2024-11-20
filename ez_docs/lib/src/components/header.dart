@@ -4,7 +4,7 @@ import '../assets/constants/color.dart';
 class Header extends StatelessWidget {
   final String title;
 
-  const Header({Key? key, required this.title}) : super(key: key);
+  const Header({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
