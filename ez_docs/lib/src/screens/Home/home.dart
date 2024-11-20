@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
             // Image background
             Positioned.fill(
               child: Image.asset(
-                'IMG_HomeBG.png',
+                'lib/src/assets/img/IMG_HomeBG.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -65,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const FunctionButton(
-                              icon: 'assets/img/IMG_Summarize.png',
+                              icon: 'lib/src/assets/img/IMG_Summarize.png',
                               buttonName: 'Tóm tắt văn bản',
                               backgroundColor: AppColors.orange,
                               iconWidth: 36,
@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             SizedBox(width: scale(context, 20)),
                             const FunctionButton(
-                              icon: 'assets/img/IMG_Summarize.png',
+                              icon:'lib/src/assets/img/IMG_Summarize.png',
                               buttonName: 'Dịch thuật',
                               backgroundColor: AppColors.forestGreen,
                               iconWidth: 30,
@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       SizedBox(height: scale(context, 50)),
                       const FunctionButton(
-                        icon: 'assets/img/IMG_Summarize.png',
+                        icon: 'lib/src/assets/img/IMG_Summarize.png',
                         buttonName: 'Chat bot',
                         backgroundColor: AppColors.blue,
                         iconWidth: 36,

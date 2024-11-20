@@ -7,14 +7,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-@override
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(), // Set HomeScreen as the home widget
+      home: const HomeScreen(), // Set HomeScreen as the home widget
     );
   }
   
