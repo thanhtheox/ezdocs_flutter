@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
-import '../assets/constants/color.dart';
+//import '../assets/constants/color.dart';
 import '../assets/constants/responsive.dart';
 
 class FunctionButton extends StatelessWidget {
   final String icon; // Path to the icon image
   final String buttonName;
   final Color backgroundColor;
+  final Color text;
   final double iconWidth;
   final double iconHeight;
+  final double width;
+  final double height;
+  final VoidCallback? onTap;
 
   const FunctionButton({
     super.key,
     required this.icon,
     required this.buttonName,
     required this.backgroundColor,
+    required this.text,
     required this.iconWidth,
     required this.iconHeight,
+    required this.width,
+    required this.height,
+     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     
     return GestureDetector(
-      onTap: () {
-        // Add onTap functionality if needed
-      },
+      onTap: onTap,
       child: Container(
-        height: scale(context, 200),
-        width: scale(context, 500),
+        height: height,
+        width: width,
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(scale(context, 15)),
@@ -49,7 +55,7 @@ class FunctionButton extends StatelessWidget {
             Text(
               buttonName,
               style: TextStyle(
-                color: AppColors.black,
+                color: text,
                 fontSize: scale(context, 32),
                 fontWeight: FontWeight.w500,
               ),
