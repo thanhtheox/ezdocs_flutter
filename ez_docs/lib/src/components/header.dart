@@ -1,37 +1,73 @@
 import 'package:flutter/material.dart';
 import '../assets/constants/color.dart';
 
-class Header extends StatelessWidget {
-  final String title;
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String activeTab;
+  final VoidCallback? onHelpTap;
+  final Function(String) onTabSelected;
 
-  const Header({super.key, required this.title});
+  const CustomAppBar({
+    super.key,
+    required this.activeTab,
+    this.onHelpTap,
+    required this.onTabSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Tính toán responsive dựa trên MediaQuery
-    double scale(double size) {
-      double designWidth = 1920;
-      double screenWidth = MediaQuery.of(context).size.width;
-      return (size / designWidth) * screenWidth;
-    }
+    return AppBar(
+      backgroundColor: AppColors.mindaro,
+      elevation: 0,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "Logo",
+            style: TextStyle(color: Colors.black),
+          ),
+          Row(
+            children: [
+              _buildAppBarButton("Dịch thuật",
+                  isActive: activeTab == "Dịch thuật"),
+              _buildAppBarButton("Tóm tắt", isActive: activeTab == "Tóm tắt"),
+              _buildAppBarButton("ChatBot", isActive: activeTab == "ChatBot"),
 
-    return SafeArea(
-      child: Container(
-        height: scale(84), // Responsive height
-        color: AppColors.mindaro,
-        padding: EdgeInsets.all(scale(10)), // Responsive padding
-        child: Align(
-          alignment: Alignment.centerRight, // Tương tự alignSelf: 'flex-end'
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: scale(24), // Responsive font size
-              color: const Color(0xFF000000), // Màu Black
-              // fontWeight: FontWeight.w700, // Uncomment nếu cần
-            ),
+              IconButton(
+                icon: const Icon(Icons.help_outline, color: Colors.black),
+                onPressed: onHelpTap ?? () {},
+              ),
+
+              const Text(
+                "Trợ giúp",
+                style: TextStyle(color: Colors.black),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppBarButton(String title, {bool isActive = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: TextButton(
+        onPressed: () {
+          onTabSelected(title);
+        },
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isActive ? Colors.black : Colors.grey,
+            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+            decoration: isActive ? TextDecoration.underline : null,
+            fontSize: 22,
           ),
         ),
       ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56.0);
 }

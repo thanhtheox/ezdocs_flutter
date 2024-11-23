@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../src/screens/Home/home.dart';
+//import '../src/screens/Home/home.dart';
+import '../src/screens/Summarize/sum.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(), // Set HomeScreen as the home widget
+      home: const SummaryScreen(),
     );
   }
   
