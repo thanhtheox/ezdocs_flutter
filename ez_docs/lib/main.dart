@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //import '../src/screens/Home/home.dart';
-import '../src/screens/Summarize/sum.dart';
+import 'src/screens/Translation/translate.dart';
 
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SummaryScreen(),
+      home: const TranslationScreen(),
     );
   }
   
