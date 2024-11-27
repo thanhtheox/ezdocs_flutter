@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ez_docs/src/screens/Home/home.dart';
-import 'package:ez_docs/src/screens/Summarize/sum.dart';
+import 'package:ez_docs/src/screens/Summary/sum.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

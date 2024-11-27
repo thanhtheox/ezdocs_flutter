@@ -3,7 +3,7 @@ import 'package:ez_docs/src/screens/Home/home.dart';
 import 'package:flutter/material.dart';
 import 'route_generator.dart';
 //import '../src/screens/Home/home.dart';
-import '../src/screens/Summarize/sum.dart';
+import 'src/screens/Translation/translate.dart';
 
 
 void main() {
