@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:docx_to_text/docx_to_text.dart';
 import 'package:ez_docs/src/repos/rewrite.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart'; // Import file_picker
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../../components/header.dart';
 import '../../components/fuctionButton.dart';
 import '../../assets/constants/color.dart';
@@ -43,14 +45,24 @@ class _SummaryScreenState extends State<SummaryScreen> {
   }
 
   void _pickFile() {
-    FilePicker.platform.pickFiles().then((result) {  // Correct usage
+    FilePicker.platform.pickFiles(type: FileType.custom,
+      allowedExtensions: ['pdf', 'docx'], ).then((result) {  // Correct usage
       if (result != null) {
         print("Noice");
-        setState(() { // setState is now accessible
-          selectedFile = result.files.first;
-          fileBytes = selectedFile.bytes ?? Uint8List(32);
-        });
-        callGeminiAPI(fileBytes);
+        String? ext = result.files.single.extension;
+        File file = File(result.files.single.path!);
+        late String text;
+        if(ext == 'pdf') {
+          final PdfDocument document =
+          PdfDocument(inputBytes: file.readAsBytesSync());
+          text = PdfTextExtractor(document).extractText();
+          document.dispose();
+        } else {
+          final bytes = file.readAsBytesSync();
+          text = docxToText(bytes);
+        }
+
+        callGeminiAPI(text);
       } else print("Err");
     });
   }
