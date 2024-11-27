@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:ez_docs/src/repos/rewrite.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart'; // Import file_picker
 import '../../components/header.dart';
 import '../../components/fuctionButton.dart';
 import '../../assets/constants/color.dart';
@@ -13,6 +18,8 @@ class SummaryScreen extends StatefulWidget {
 class _SummaryScreenState extends State<SummaryScreen> {
   final TextEditingController _textController = TextEditingController();
   int _wordCount = 0;
+  late PlatformFile selectedFile; // Add state for the selected file
+  late Uint8List fileBytes; // Store file bytes
 
   @override
   void initState() {
@@ -34,6 +41,21 @@ class _SummaryScreenState extends State<SummaryScreen> {
           : _textController.text.trim().split(RegExp(r'\s+')).length;
     });
   }
+
+  void _pickFile() {
+    FilePicker.platform.pickFiles().then((result) {  // Correct usage
+      if (result != null) {
+        print("Noice");
+        setState(() { // setState is now accessible
+          selectedFile = result.files.first;
+          fileBytes = selectedFile.bytes ?? Uint8List(32);
+        });
+        callGeminiAPI(fileBytes);
+      } else print("Err");
+    });
+  }
+
+
 
   @override
 Widget build(BuildContext context) {
@@ -110,7 +132,8 @@ Widget build(BuildContext context) {
                   ),
                 ),
                 // Nút Upload
-                const FunctionButton(
+                FunctionButton(
+                  onTap: _pickFile,
                   icon: 'lib/src/assets/img/IMG_Upload.png',
                   buttonName: 'Upload tài liệu',
                   text: AppColors.white,
