@@ -74,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const FunctionButton(
+                            FunctionButton(
                               icon: 'lib/src/assets/img/IMG_Summarize.png',
                               buttonName: 'Tóm tắt văn bản',
                               text: AppColors.black,
@@ -83,9 +83,12 @@ class HomeScreen extends StatelessWidget {
                               iconHeight: 29,
                               width: 200,
                               height: 500,
+                                onTap: () {
+                                  Navigator.of(context).pushNamed('/Summarize');
+                                }
                             ),
                             SizedBox(width: scale(context, 20)),
-                            const FunctionButton(
+                            FunctionButton(
                               icon: 'lib/src/assets/img/IMG_Translate.png',
                               buttonName: 'Dịch thuật',
                               text: AppColors.black,
@@ -94,6 +97,9 @@ class HomeScreen extends StatelessWidget {
                               iconHeight: 30,
                               width: 200,
                               height: 500,
+                              onTap: () {
+                                Navigator.of(context).pushNamed('/Summarize');
+                              }
                             ),
                           ],
                         ),
