@@ -23,10 +23,17 @@ class _SummaryScreenState extends State<SummaryScreen> {
   late PlatformFile selectedFile; // Add state for the selected file
   late Uint8List fileBytes; // Store file bytes
 
-  String? _selectedFontFamily = 'Times New Roman'; // Default font
+  String _selectedFontFamily = 'Times New Roman'; // Default font
   final TextEditingController _textEditingController = TextEditingController();
   final List<String> _fontFamilies = [
     'Times New Roman', 'Arial', 'Courier New', 'Georgia', 'Verdana', 'Tahoma', 'Trebuchet MS', // Add more as needed
+  ];
+
+  double _selectedFontSize = 12.0; // Default font size
+  final TextEditingController _sizeEditingController = TextEditingController();
+
+  final List<double> _fontSizes = [
+    8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 16.0, 18.0, 20.0, 24.0, 36.0, 48.0,  // Standard font sizes
   ];
 
 
@@ -68,8 +75,65 @@ class _SummaryScreenState extends State<SummaryScreen> {
           final bytes = file.readAsBytesSync();
           text = docxToText(bytes);
         }
-
-        callGeminiAPI(text);
+        showDialog(context: context, builder: (BuildContext context) {
+            return StatefulBuilder( // <-- StatefulBuilder is key!
+              builder: (context,setState) {return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              contentPadding: EdgeInsets.only(left: 12, top: 20, right: 12),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Pick your font:',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(height: 5,),
+                    DropdownButton<String>(
+                      value: _selectedFontFamily,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedFontFamily = newValue!;
+                        });
+                      },
+                      items: _fontFamilies.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value, style: TextStyle(fontFamily: value)), // Display font in dropdown
+                        );
+                      }).toList(),
+                    ),
+                    Text('Pick your font size:',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(height: 5,),
+                    DropdownButton<double>(
+                      value: _selectedFontSize,
+                      onChanged: (double? newValue) {
+                        setState(() {
+                          _selectedFontSize = newValue!;
+                        });
+                      },
+                      items: _fontSizes.map<DropdownMenuItem<double>>((double value) {
+                        return DropdownMenuItem<double>(
+                          value: value,
+                          child: Text(value.toString(), style: TextStyle(fontSize: value)), // Show size in dropdown
+                        );
+                      }).toList(),
+                    ),
+                    TextButton(onPressed: () {
+                      Navigator.of(context).pop();
+                      callGeminiAPI(text,_selectedFontFamily, _selectedFontSize);
+                      },
+                        child: Text("Go")
+                    )
+                  ]
+              ),
+              actions: <Widget>[],
+            );
+          });}
+        );
       } else print("Err");
     });
   }
@@ -154,21 +218,7 @@ Widget build(BuildContext context) {
                 Row(
                   children: [
 
-                    DropdownButton<String>(
 
-                      value: _selectedFontFamily,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedFontFamily = newValue;
-                        });
-                      },
-                      items: _fontFamilies.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value, style: TextStyle(fontFamily: value)), // Display font in dropdown
-                        );
-                      }).toList(),
-                    ),
                     const SizedBox(width: 300),
                     FunctionButton(
                       onTap: _pickFile,
