@@ -1,7 +1,7 @@
-import 'dart:io';
+//import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 
 import 'package:google_generative_ai/google_generative_ai.dart';
 
