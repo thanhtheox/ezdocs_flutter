@@ -20,7 +20,7 @@ Future<void> callGeminiAPI(String doc, String family, double size) async {
 
   try {
     final model = GenerativeModel(
-      model: 'gemini-1.5-pro',
+      model: 'gemini-1.5-flash-8b',
       apiKey: apiKey,
     );
     print("model dne");
