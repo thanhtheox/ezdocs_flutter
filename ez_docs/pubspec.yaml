@@ -39,8 +39,12 @@ dependencies:
   flutter_svg: ^2.0.5
   google_generative_ai: ^0.4.6
   file_picker: ^8.0.5
+
+  http: ^1.2.2
+
   syncfusion_flutter_pdf: ^27.2.4
   docx_to_text: ^1.0.1
+
 
 dev_dependencies:
   flutter_test:

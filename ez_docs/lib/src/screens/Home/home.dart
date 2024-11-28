@@ -9,6 +9,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
@@ -81,8 +82,8 @@ class HomeScreen extends StatelessWidget {
                               backgroundColor: AppColors.orange,
                               iconWidth: 36,
                               iconHeight: 29,
-                              width: 200,
-                              height: 500,
+                              width: 300,
+                              height: screenWidth *0.08,
                                 onTap: () {
                                   Navigator.of(context).pushNamed('/Summarize');
                                 }
@@ -95,10 +96,10 @@ class HomeScreen extends StatelessWidget {
                               backgroundColor: AppColors.forestGreen,
                               iconWidth: 30,
                               iconHeight: 30,
-                              width: 200,
-                              height: 500,
+                              width: 300,
+                              height: screenWidth *0.08,
                               onTap: () {
-                                Navigator.of(context).pushNamed('/Summarize');
+                                Navigator.of(context).pushNamed('/Translation');
                               }
                             ),
                           ],
@@ -112,8 +113,8 @@ class HomeScreen extends StatelessWidget {
                         backgroundColor: AppColors.blue,
                         iconWidth: 36,
                         iconHeight: 36,
-                        width: 200,
-                        height: 500,
+                        width: 300,
+                        height: 100,
                       ),
                     ],
                   ),

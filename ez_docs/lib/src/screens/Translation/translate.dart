@@ -75,15 +75,15 @@ class _TranslationScreenState extends State<TranslationScreen> {
                       Row(
                         children: [
                           Dropdown(
-                            items: ['Anh', 'Pháp', 'Đức'],
+                            items: const ['Anh', 'Pháp', 'Đức'],
                             selectedItem: 'Anh',
                             backgroundColor: AppColors.gray.withOpacity(0.3),
                             textColor: AppColors.black,
                           ),
-                          SizedBox(width: 8),
-                          Icon(Icons.arrow_right_alt, color: AppColors.black),
-                          SizedBox(width: 8),
-                          Dropdown(
+                          const SizedBox(width: 8),
+                          const Icon(Icons.arrow_right_alt, color: AppColors.black),
+                          const SizedBox(width: 8),
+                          const Dropdown(
                             items: ['Việt', 'Hoa', 'Nhật'],
                             selectedItem: 'Việt',
                             backgroundColor: AppColors.mindaro,
@@ -94,7 +94,7 @@ class _TranslationScreenState extends State<TranslationScreen> {
                 
                       ElevatedButton(
                         onPressed: () {
-                          print("Nút Dịch được nhấn");
+                          Navigator.of(context).pushNamed('/TranslationResult');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.orange,
@@ -111,7 +111,7 @@ class _TranslationScreenState extends State<TranslationScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Container(
                     height: 400,
                     decoration: BoxDecoration(
