@@ -23,6 +23,13 @@ class _SummaryScreenState extends State<SummaryScreen> {
   late PlatformFile selectedFile; // Add state for the selected file
   late Uint8List fileBytes; // Store file bytes
 
+  String? _selectedFontFamily = 'Times New Roman'; // Default font
+  final TextEditingController _textEditingController = TextEditingController();
+  final List<String> _fontFamilies = [
+    'Times New Roman', 'Arial', 'Courier New', 'Georgia', 'Verdana', 'Tahoma', 'Trebuchet MS', // Add more as needed
+  ];
+
+
   @override
   void initState() {
     super.initState();
@@ -144,17 +151,50 @@ Widget build(BuildContext context) {
                   ),
                 ),
                 // Nút Upload
-                FunctionButton(
-                  onTap: _pickFile,
-                  icon: 'lib/src/assets/img/IMG_Upload.png',
-                  buttonName: 'Upload tài liệu',
-                  text: AppColors.white,
-                  backgroundColor: AppColors.forestGreen,
-                  iconWidth: 36,
-                  iconHeight: 29,
-                  width: 300,
-                  height: 70,
+                Row(
+                  children: [
+
+                    DropdownButton<String>(
+
+                      value: _selectedFontFamily,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedFontFamily = newValue;
+                        });
+                      },
+                      items: _fontFamilies.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value, style: TextStyle(fontFamily: value)), // Display font in dropdown
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(width: 300),
+                    FunctionButton(
+                      onTap: _pickFile,
+                      icon: 'lib/src/assets/img/IMG_Upload.png',
+                      buttonName: 'Upload tài liệu',
+                      text: AppColors.white,
+                      backgroundColor: AppColors.forestGreen,
+                      iconWidth: 36,
+                      iconHeight: 29,
+                      width: 300,
+                      height: 70,
+                    ),
+
+                  ],
                 ),
+                // FunctionButton(
+                //   onTap: _pickFile,
+                //   icon: 'lib/src/assets/img/IMG_Upload.png',
+                //   buttonName: 'Upload tài liệu',
+                //   text: AppColors.white,
+                //   backgroundColor: AppColors.forestGreen,
+                //   iconWidth: 36,
+                //   iconHeight: 29,
+                //   width: 300,
+                //   height: 70,
+                // ),
                 const SizedBox(height: 20),
               ],
             ),
