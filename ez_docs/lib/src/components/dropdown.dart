@@ -8,7 +8,7 @@ class Dropdown extends StatefulWidget {
   final double? width; // Thêm thuộc tính width
   final double? height;
 
-  Dropdown({
+  const Dropdown({super.key, 
     required this.items,
     required this.selectedItem,
     required this.backgroundColor,
@@ -33,7 +33,7 @@ class _DropdownState extends State<Dropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: widget.backgroundColor,
         borderRadius: BorderRadius.circular(8),
@@ -42,7 +42,7 @@ class _DropdownState extends State<Dropdown> {
         value: selectedValue,
         icon: Icon(Icons.arrow_drop_down, color: widget.textColor),
         iconSize: 24,
-        underline: SizedBox(), // Xóa gạch chân mặc định
+        underline: const SizedBox(), // Xóa gạch chân mặc định
         style: TextStyle(color: widget.textColor, fontSize: 16),
         onChanged: (String? newValue) {
           setState(() {

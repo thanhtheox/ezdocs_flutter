@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.0.5
   google_generative_ai: ^0.4.6
   file_picker: ^8.0.5
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
