@@ -7,11 +7,11 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 
 import 'main_links.dart';
 
-Future<void> callGeminiAPI(String doc, String family, double size) async {
-  if (apiKey.isEmpty) {
-    // Handle the case where the API key is not available
-    errorMessage = 'API key is missing.';
-    return;
+Future<void> callGeminiAPI(String doc, String family, double size, [String? mod]) async {
+  if (apiKey.isEmpty || attempts >= 50) {
+    print("Try again");
+    fetchApiKey();
+    callGeminiAPI(doc, family, size);
   }
 
   isLoading = true;
@@ -19,8 +19,12 @@ Future<void> callGeminiAPI(String doc, String family, double size) async {
   print("Starting");
 
   try {
+    attempts++;
+    print("gg");
+    updateUsedStatus(true, null, attempts);
+    print("ggg");
     final model = GenerativeModel(
-      model: 'gemini-1.5-pro',
+      model: mod ?? 'gemini-1.5-flash-8b',
       apiKey: apiKey,
     );
     print("model dne");
@@ -33,6 +37,7 @@ Future<void> callGeminiAPI(String doc, String family, double size) async {
       errorMessage = 'Error: $e';
       print(errorMessage);
   } finally {
+    updateUsedStatus(false, null, attempts);
     isLoading = false;
   }
 }

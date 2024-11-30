@@ -23,11 +23,11 @@ class _MyAppState extends State<MyApp>{
     fetchApiKey();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    resetUsedStatus();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   resetUsedStatus();
+  // }
 
   @override
   Widget build(BuildContext context) {
