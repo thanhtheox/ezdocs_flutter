@@ -1,9 +1,10 @@
 import 'dart:convert';
+
 import 'package:intl/intl.dart';
 import 'dart:io' show Platform, exit;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_generative_ai/google_generative_ai.dart';// Import the package
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 // Data model for the JSON data
 class DataItem {
@@ -142,3 +143,4 @@ Future<void> updateUsedStatus(bool status, String? uLast, int uAttempts) async {
 
   }
 }
+

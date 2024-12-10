@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:docx_to_text/docx_to_text.dart';
+import 'package:ez_docs/src/repos/main_links.dart';
 import 'package:ez_docs/src/repos/rewrite.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart'; // Import file_picker
@@ -36,6 +37,37 @@ class _SummaryScreenState extends State<SummaryScreen> {
     8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 16.0, 18.0, 20.0, 24.0, 36.0, 48.0,  // Standard font sizes
   ];
 
+  Future<void> _generatePDF(String geminiOutput) async {
+    //Create a PDF document.
+    final PdfDocument document = PdfDocument();
+    //Add page to the PDF
+    document.pages.add().graphics.drawString(
+        'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+        bounds: const Rect.fromLTWH(0, 0, 150, 20));
+    final List<int> bytes = await document.save();
+
+    //Launch file.
+    await saveAndLaunchFile(bytes, 'Invoice.pdf');
+    document.dispose();
+  }
+
+  Future<void> saveAndLaunchFile(List<int> bytes, String fileName) async {
+    try {
+      final directory = await FilePicker.platform.getDirectoryPath(); // Or getTemporaryDirectory()
+      final file = File('$directory/$fileName');
+      await file.writeAsBytes(bytes);
+
+      print('File saved at: ${file.path}');
+
+      // Optional: Open the saved file using the open_file package
+      // await OpenFile.open(file.path);
+
+    } catch (e) {
+      print('Error saving file: $e');
+      // Handle error (e.g., show a dialog)
+    }
+  }
 
   @override
   void initState() {
@@ -253,6 +285,13 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     height: screenWidth * 0.05,
                   ),
                   const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async{
+                      await _generatePDF(geminiOutput);
+
+                    },
+                    child: const Text('Download PDF'),
+                  ),
                 ],
               ),
             ),
