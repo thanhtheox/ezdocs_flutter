@@ -1,9 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../assets/constants/color.dart';
 import '../../components/header.dart';
 import '../../components/fuctionButton.dart';
 //import 'package:flutter/src/material/dropdown.dart';
 import '../../components/dropdown.dart';
+import 'package:file_picker/file_picker.dart'; // Import file_picker
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+
+import '../../repos/main_links.dart';
+import '../../repos/rewrite.dart';
+import './sum.dart';
 
 class SummaryResultScreen extends StatefulWidget {
   const SummaryResultScreen({super.key});
@@ -15,10 +22,45 @@ class SummaryResultScreen extends StatefulWidget {
 class _SummaryResultScreenState extends State<SummaryResultScreen> {
   final TextEditingController _textController = TextEditingController();
   int _wordCount = 0;
+  final TextEditingController _textEditingController = TextEditingController();
+
+  Future<void> _generatePDF(String geminiOutput) async {
+    //Create a PDF document.
+    final PdfDocument document = PdfDocument();
+    //Add page to the PDF
+    document.pages.add().graphics.drawString(
+        geminiOutput, PdfStandardFont(PdfFontFamily.timesRoman, 12),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+        bounds: const Rect.fromLTWH(0, 0, 150, 20));
+    final List<int> bytes = await document.save();
+
+    //Launch file.
+    await saveAndLaunchFile(bytes, 'Invoice.pdf');
+    document.dispose();
+  }
+
+  Future<void> saveAndLaunchFile(List<int> bytes, String fileName) async {
+    try {
+      final directory = await FilePicker.platform.getDirectoryPath(); // Or getTemporaryDirectory()
+      final file = File('$directory/$fileName');
+      await file.writeAsBytes(bytes);
+
+      print('File saved at: ${file.path}');
+
+      // Optional: Open the saved file using the open_file package
+      // await OpenFile.open(file.path);
+
+    } catch (e) {
+      print('Error saving file: $e');
+      // Handle error (e.g., show a dialog)
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _textController.addListener(_updateWordCount);
+    _loadData();
   }
 
   @override
@@ -26,6 +68,21 @@ class _SummaryResultScreenState extends State<SummaryResultScreen> {
     _textController.removeListener(_updateWordCount);
     _textController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      final data = await callGeminiAPI(text);
+      setState(() {
+        _textEditingController.text = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _textEditingController.text = 'Error loading data';
+        isLoading = false;
+      });
+    }
   }
 
   void _updateWordCount() {
@@ -103,6 +160,13 @@ class _SummaryResultScreenState extends State<SummaryResultScreen> {
                           style: TextStyle(color: AppColors.black),
                         ),
                       ),
+                      ElevatedButton(
+                        onPressed: () async{
+                          await _generatePDF(geminiOutput);
+
+                        },
+                        child: const Text('Download PDF'),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -160,12 +224,17 @@ class _SummaryResultScreenState extends State<SummaryResultScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Expanded(
-                                  child: Text(
-                                    "Văn bản đã tóm tắt",
-                                    style: TextStyle(color: Colors.black),
+                                isLoading ? const CircularProgressIndicator() :
+                                TextField(
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: null,
+                                  controller: _textEditingController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: "VB...",
                                   ),
                                 ),
+
                                 // Align(
                                 //   alignment: Alignment.bottomRight,
                                 //   child: Text(

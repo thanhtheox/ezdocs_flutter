@@ -9,11 +9,11 @@ import 'main_links.dart';
 
 
 
-Future<void> callGeminiAPI(String doc, String family, double size, [String? mod]) async {
+Future<String> callGeminiAPI(String doc, [String? mod]) async {
   if (apiKey.isEmpty || attempts >= 50) {
     print("Try again");
     fetchApiKey();
-    callGeminiAPI(doc, family, size);
+    callGeminiAPI(doc);
   }
 
   isLoading = true;
@@ -30,16 +30,19 @@ Future<void> callGeminiAPI(String doc, String family, double size, [String? mod]
       apiKey: apiKey,
     );
     print("model dne");
-    String prompt = 'Testing 1 2 3 \n$doc\ncan you read it?. Please return a rewritten version of it in HTML, without any further explanation, with the font $family, size $size';
+    String prompt = 'Testing 1 2 3 \n$doc\ncan you read it?. Please return a rewritten version of it';
 
     final response = await model.generateContent([Content.text(prompt)]) ;
-    geminiOutput = "Testing";//response.text ?? "There is an error, somehow";
+    geminiOutput = response.text ?? "There is an error, somehow";
     print(geminiOutput);
+    return geminiOutput;
   } catch (e) {
       errorMessage = 'Error: $e';
       print(errorMessage);
+      rethrow;
   } finally {
     updateUsedStatus(false, null, attempts);
     isLoading = false;
+
   }
 }

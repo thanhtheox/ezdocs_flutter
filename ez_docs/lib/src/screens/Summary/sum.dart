@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -10,6 +11,8 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../../components/header.dart';
 import '../../components/fuctionButton.dart';
 import '../../assets/constants/color.dart';
+
+late String text;
 
 class SummaryScreen extends StatefulWidget {
   const SummaryScreen({super.key});
@@ -37,37 +40,37 @@ class _SummaryScreenState extends State<SummaryScreen> {
     8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 16.0, 18.0, 20.0, 24.0, 36.0, 48.0,  // Standard font sizes
   ];
 
-  Future<void> _generatePDF(String geminiOutput) async {
-    //Create a PDF document.
-    final PdfDocument document = PdfDocument();
-    //Add page to the PDF
-    document.pages.add().graphics.drawString(
-        'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
-        brush: PdfSolidBrush(PdfColor(0, 0, 0)),
-        bounds: const Rect.fromLTWH(0, 0, 150, 20));
-    final List<int> bytes = await document.save();
-
-    //Launch file.
-    await saveAndLaunchFile(bytes, 'Invoice.pdf');
-    document.dispose();
-  }
-
-  Future<void> saveAndLaunchFile(List<int> bytes, String fileName) async {
-    try {
-      final directory = await FilePicker.platform.getDirectoryPath(); // Or getTemporaryDirectory()
-      final file = File('$directory/$fileName');
-      await file.writeAsBytes(bytes);
-
-      print('File saved at: ${file.path}');
-
-      // Optional: Open the saved file using the open_file package
-      // await OpenFile.open(file.path);
-
-    } catch (e) {
-      print('Error saving file: $e');
-      // Handle error (e.g., show a dialog)
-    }
-  }
+  // Future<void> _generatePDF(String geminiOutput) async {
+  //   //Create a PDF document.
+  //   final PdfDocument document = PdfDocument();
+  //   //Add page to the PDF
+  //   document.pages.add().graphics.drawString(
+  //       'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+  //       brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+  //       bounds: const Rect.fromLTWH(0, 0, 150, 20));
+  //   final List<int> bytes = await document.save();
+  //
+  //   //Launch file.
+  //   await saveAndLaunchFile(bytes, 'Invoice.pdf');
+  //   document.dispose();
+  // }
+  //
+  // Future<void> saveAndLaunchFile(List<int> bytes, String fileName) async {
+  //   try {
+  //     final directory = await FilePicker.platform.getDirectoryPath(); // Or getTemporaryDirectory()
+  //     final file = File('$directory/$fileName');
+  //     await file.writeAsBytes(bytes);
+  //
+  //     print('File saved at: ${file.path}');
+  //
+  //     // Optional: Open the saved file using the open_file package
+  //     // await OpenFile.open(file.path);
+  //
+  //   } catch (e) {
+  //     print('Error saving file: $e');
+  //     // Handle error (e.g., show a dialog)
+  //   }
+  // }
 
   @override
   void initState() {
@@ -97,7 +100,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
         print("Noice");
         String? ext = result.files.single.extension;
         File file = File(result.files.single.path!);
-        late String text;
+
         if(ext == 'pdf') {
           final PdfDocument document =
           PdfDocument(inputBytes: file.readAsBytesSync());
@@ -156,7 +159,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     ),
                     TextButton(onPressed: () {
                       Navigator.of(context).pop();
-                      callGeminiAPI(text,_selectedFontFamily, _selectedFontSize);
+                      //callGeminiAPI(text,_selectedFontFamily, _selectedFontSize);
+                      //showDialog(context: context, builder: (BuildContext context) {return CircularProgressIndicator();});
+                      Navigator.of(context).pushNamed('/SummarizeResult');
                       },
                         child: Text("Go")
                     )
@@ -285,13 +290,13 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     height: screenWidth * 0.05,
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async{
-                      await _generatePDF(geminiOutput);
-
-                    },
-                    child: const Text('Download PDF'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () async{
+                  //     await _generatePDF(geminiOutput);
+                  //
+                  //   },
+                  //   child: const Text('Download PDF'),
+                  // ),
                 ],
               ),
             ),
