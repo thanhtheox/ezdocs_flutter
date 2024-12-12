@@ -1,3 +1,4 @@
+import 'package:ez_docs/src/screens/Chatbot/chatbot.dart';
 import 'package:ez_docs/src/screens/Translation/translate.dart';
 import 'package:ez_docs/src/screens/Translation/translateResult.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const TranslationScreen());
       case '/TranslationResult':
         return MaterialPageRoute(builder: (_) => const TranslationResultScreen());
+      case '/Chatbot':
+        return MaterialPageRoute(builder: (_) => const ChatbotScreen());
       default:
       // If there is no such named route in the switch statement, e.g. /third
         return MaterialPageRoute(builder: (_) => const Scaffold(body: SafeArea(child: Text('Route Error'))));

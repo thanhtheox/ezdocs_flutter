@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: scale(context, 50)),
-                      const FunctionButton(
+                      FunctionButton(
                         icon: 'lib/src/assets/img/IMG_Chatbot.png',
                         buttonName: 'Chat bot',
                         text: AppColors.black,
@@ -115,6 +115,9 @@ class HomeScreen extends StatelessWidget {
                         iconHeight: 36,
                         width: 300,
                         height: 100,
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/Chatbot');
+                        },
                       ),
                     ],
                   ),
