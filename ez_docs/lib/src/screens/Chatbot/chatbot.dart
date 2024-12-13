@@ -11,57 +11,9 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 
 import '../../components/header.dart';
 
-List<Part> context = [];
 
-class ChatbotScreen extends StatefulWidget {
-  const ChatbotScreen({super.key});
-
-  @override
-  State<ChatbotScreen> createState() => _ChatbotScreenState();
-}
-
-class _ChatbotScreenState extends State<ChatbotScreen> {
-  List<ChatMessage> messages = [];
-  ChatUser currentUser = ChatUser(id: "0", firstName: "User");
-  ChatUser geminiUser = ChatUser(id: "1", firstName: "Gemini");
-  
-  @override
-  void initState() {
-    super.initState();
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    return Scaffold(
-      appBar: CustomAppBar(
-        activeTab: "Chatbot",
-        onHelpTap: () {
-          print("Nút trợ giúp được nhấn");
-        },
-        onTabSelected: (selectedTab) {
-          print("Tab được chọn: $selectedTab");
-        },
-      ),
-      body: DashChat(inputOptions: isLoading ? InputOptions(trailing: [CircularProgressIndicator()]) : InputOptions(trailing: [
-        SizedBox()
-      ]),
-          currentUser: currentUser, onSend: _sendMessage, messages: messages),
-    );
-  }
-  Future<void> _sendMessage(ChatMessage chatMessage) async {
-    setState(() {
-      messages = [chatMessage, ...messages];
-      context = [TextPart(chatMessage.text), ...context];
-      isLoading = true;
-    });
-    try {
-      String question = chatMessage.text;
-      String chatbotInstr = '''<PERSONA>
+List<Part> contextG = [];
+String chatbotInstr = '''<PERSONA>
       You are both an English interpreter and teacher with more than 20 years of experience. You has worked in Vietnam for more than 10 years.
     </PERSONA>
 
@@ -208,7 +160,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     Reference: “He then moved to Austin for three years, and during this time the first recorded use of his pseudonym appeared, allegedly derived from his habit of calling “Oh, Henry” to a family cat. In 1887, Porter married Athol Estes.”
     Question 6: How old was Porter’s son in 1897?
     Answer: Not given.
-    //This is only the example of the format of your answer; no content of this should be referenced or derived in the main task
     </SOURCE>
 
     <INSTRUCTION>
@@ -217,6 +168,58 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     •	Answers must be returned with reference which have been given in the passage except the not given answer.
     •	You need to wait for me to input the question before giving answer.
     </INSTRUCTION>''';
+
+class ChatbotScreen extends StatefulWidget {
+  const ChatbotScreen({super.key});
+
+  @override
+  State<ChatbotScreen> createState() => _ChatbotScreenState();
+}
+
+class _ChatbotScreenState extends State<ChatbotScreen> {
+  List<ChatMessage> messages = [];
+  ChatUser currentUser = ChatUser(id: "0", firstName: "User");
+  ChatUser geminiUser = ChatUser(id: "1", firstName: "Gemini");
+  
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    ChatMessage init = ChatMessage(user: geminiUser, createdAt: DateTime.now(),text: chatbotInstr,);
+    contextG.insert(0, TextPart(init.text));
+    return Scaffold(
+      appBar: CustomAppBar(
+        activeTab: "Chatbot",
+        onHelpTap: () {
+          print("Nút trợ giúp được nhấn");
+        },
+        onTabSelected: (selectedTab) {
+          print("Tab được chọn: $selectedTab");
+        },
+      ),
+      body: DashChat(inputOptions: isLoading ? InputOptions(trailing: [CircularProgressIndicator()]) : InputOptions(trailing: [
+        SizedBox()
+      ]),
+          currentUser: currentUser, onSend: _sendMessage, messages: messages),
+    );
+  }
+  Future<void> _sendMessage(ChatMessage chatMessage) async {
+    setState(() {
+      messages = [chatMessage, ...messages];
+      contextG = [TextPart(chatMessage.text), ...contextG];
+      isLoading = true;
+    });
+    try {
+      String question = chatMessage.text;
+
       attempts++;
       print("gg");
       updateUsedStatus(true, null, attempts);
@@ -224,7 +227,12 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       final model = GenerativeModel(
         model: 'gemini-1.5-pro',
         apiKey: apiKey,
-        systemInstruction: Content(chatbotInstr, context),
+        systemInstruction: Content(chatbotInstr, contextG),
+        generationConfig: GenerationConfig(
+          temperature: 0.8,
+          topP: 0.95,
+          responseMimeType: 'text/plain',
+        ),
       );
       print("model dne");
 
