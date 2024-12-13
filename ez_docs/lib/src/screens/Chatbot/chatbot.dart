@@ -11,6 +11,8 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 
 import '../../components/header.dart';
 
+List<Part> context = [];
+
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});
 
@@ -54,6 +56,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   Future<void> _sendMessage(ChatMessage chatMessage) async {
     setState(() {
       messages = [chatMessage, ...messages];
+      context = [TextPart(chatMessage.text), ...context];
       isLoading = true;
     });
     try {
@@ -205,6 +208,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     Reference: “He then moved to Austin for three years, and during this time the first recorded use of his pseudonym appeared, allegedly derived from his habit of calling “Oh, Henry” to a family cat. In 1887, Porter married Athol Estes.”
     Question 6: How old was Porter’s son in 1897?
     Answer: Not given.
+    //This is only the example of the format of your answer; no content of this should be referenced or derived in the main task
     </SOURCE>
 
     <INSTRUCTION>
@@ -218,9 +222,9 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       updateUsedStatus(true, null, attempts);
       print("ggg");
       final model = GenerativeModel(
-        model: 'gemini-1.5-flash-8b',
+        model: 'gemini-1.5-pro',
         apiKey: apiKey,
-        systemInstruction: Content.text(chatbotInstr),
+        systemInstruction: Content(chatbotInstr, context),
       );
       print("model dne");
 
@@ -230,6 +234,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         messages = [message,...messages];
         isLoading = false;
       });
+      updateUsedStatus(false, DateTime.now().toString(), attempts);
     } catch(e) {
       print(e);
     }

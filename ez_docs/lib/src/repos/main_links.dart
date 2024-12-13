@@ -117,7 +117,7 @@ Future<void> updateUsedStatus(bool status, String? uLast, int uAttempts) async {
               (item) => item.key == apiKey,
           orElse: () => throw Exception('Used API key not found in list'));
 
-
+      print("found");
       final index = dataItems.indexOf(usedItem);
       dataItems[index] = DataItem(
           id: usedItem.id,key: usedItem.key, used: status, lastUsed: uLast ?? usedItem.lastUsed, attempts: uAttempts); // Set used to false
@@ -127,7 +127,7 @@ Future<void> updateUsedStatus(bool status, String? uLast, int uAttempts) async {
         Uri.parse('http://thbao.mooo.com/be.php'),
         body: jsonEncode(dataItems),
         headers: {'Content-Type': 'application/json'},
-      );
+      );print(response.statusCode);
       if (response.statusCode != 200 && response.statusCode != 204) {
         // setState(() {
         //   isClosing = false;
