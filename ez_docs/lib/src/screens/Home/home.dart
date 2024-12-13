@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../../assets/constants/color.dart';
 import '../../assets/constants/responsive.dart';
 import '../../components/fuctionButton.dart';
-import '../../components/header.dart'; // Import CustomAppBar here
+import '../../components/header.dart';
+import '../../repos/main_links.dart'; // Import CustomAppBar here
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -10,6 +11,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    isLoading = false;
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(

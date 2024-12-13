@@ -189,6 +189,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   @override
   Widget build(BuildContext context) {
+    isLoading = false;
     double screenWidth = MediaQuery
         .of(context)
         .size
